@@ -6,13 +6,16 @@ use cardano/transaction.{OutputReference, Transaction}
 validator one_shot(utxo_ref: OutputReference) {
   mint(_redeemer: Data, policy_id: PolicyId, self: Transaction) {
     let Transaction { inputs, mint, .. } = self
-    expect [Pair(_asset_name, _quantity)] =
+    let minted_pairs =
       mint
         |> assets.tokens(policy_id)
         |> dict.to_pairs()
-    let is_output_consumed =
-      list.any(inputs, fn(input) { input.output_reference == utxo_ref })
-    is_output_consumed
+
+    when minted_pairs is {
+      [Pair(_asset_name, _quantity)] ->
+        list.any(inputs, fn(input) { input.output_reference == utxo_ref })
+      _ -> False
+    }
   }
 
   else(_) {
