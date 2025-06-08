@@ -1,6 +1,5 @@
 import plutus from "@/plutus/validators.json";
 import {
-  Data,
   applyDoubleCborEncoding,
   Constr,
   applyParamsToScript,
