@@ -20,7 +20,7 @@ const CardanoContext = createContext<CardanoContextType | undefined>(undefined);
 
 export function CardanoProvider({ children }: { children: ReactNode }) {
   const [selectedWallet, setSelectedWalletInternal] = useState<string | null>(
-    null
+    null,
   );
   const [isCardanoContextLoading, setIsCardanoContextLoading] = useState(true);
   const [lovelace, setLovelace] = useState<bigint>(0n);

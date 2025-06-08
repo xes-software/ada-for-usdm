@@ -7,11 +7,11 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write . && cd ./aiken && aiken fmt",
+    "format": "prettier --write . && cd ./aiken-workspace && aiken fmt",
     "format:check": "prettier --check .",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "aiken:build": "cd ./aiken && aiken build -o ../src/plutus/validator.json"
+    "aiken:build": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json"
   },
   "dependencies": {
     "@lucid-evolution/lucid": "^0.4.28",
