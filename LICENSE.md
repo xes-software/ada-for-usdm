@@ -1,32 +1,9 @@
-# 📄 Custom License – xes.software LLC
+# MIT License
 
-**Copyright (c) [2025] xes.software LLC**
+Copyright 2025 xes.software LLC
 
-All rights reserved.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-This repository and its contents (including but not limited to source code, configuration files, documentation, templates, and media assets) are the exclusive property of **xes.software LLC**.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
----
-
-## ❌ Prohibited Uses
-
-You may **not**:
-
-- ❌ Copy, clone, fork, or download this repository or any portion of it
-- ❌ Distribute or sublicense any part of the contents to any third party
-- ❌ Use this repository or its contents as the basis for any product or service, commercial or otherwise
-
----
-
-## ⚖️ Legal
-
-Any unauthorized use constitutes a violation of intellectual property laws and may result in legal action.
-
-To request permission or licensing terms, please contact:  
-📧 **leif@xes.software**
-
-This license is governed by and construed in accordance with the laws of the **Wyoming, United States**.
-
----
-
-_Do not remove, alter, or obscure this license notice._
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

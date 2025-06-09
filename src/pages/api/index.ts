@@ -20,23 +20,18 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const { address, utxo } = JSON.parse(req.body) as BuildTxRequest;
-  console.log("UTXO:", utxo);
-
   const { mintingPolicy, policyId } = await getOneShotMintValidator(
     utxo.txHash,
     utxo.outputIndex,
   );
 
-  console.log("PolicyId:", policyId);
-
   const lucid = await getServerLucidInstance();
 
-  const unit = policyId + fromText("Newest Asset");
+  const unit = policyId + fromText("NFT");
 
   const spending_utxo = await lucid.utxosByOutRef([
     { outputIndex: utxo.outputIndex, txHash: utxo.txHash },
   ]);
-  console.log("Spending UTXO:", spending_utxo);
 
   const walletUtxos = await lucid.utxosAt(address);
   lucid.selectWallet.fromAddress(address, walletUtxos);
@@ -44,8 +39,8 @@ export default async function handler(
   const tx = await lucid
     .newTx()
     .collectFrom(spending_utxo)
-    .mintAssets({ [unit]: 1000n }, Data.void())
-    .pay.ToAddress(address, { [unit]: 1000n })
+    .mintAssets({ [unit]: 1n }, Data.void())
+    .pay.ToAddress(address, { [unit]: 1n })
     .attach.MintingPolicy(mintingPolicy)
     .complete();
   const response: BuildTxResponse = {

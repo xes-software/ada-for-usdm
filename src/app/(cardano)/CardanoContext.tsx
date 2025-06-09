@@ -7,6 +7,7 @@ import {
   useState,
   useEffect,
 } from "react";
+import { toast } from "sonner";
 
 interface CardanoContextType {
   selectedWallet: string | null;
@@ -31,6 +32,7 @@ export function CardanoProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function loadCardanoContext() {
       const l = await import("@lucid-evolution/lucid");
+      setLucidLibrary(l);
       const selectedWallet = localStorage.getItem("selectedWallet");
       if (selectedWallet) {
         setSelectedWalletInternal(selectedWallet);
@@ -45,7 +47,6 @@ export function CardanoProvider({ children }: { children: ReactNode }) {
         }
         setLovelace(lovelace);
       }
-      setLucidLibrary(l);
       setIsCardanoContextLoading(false);
     }
 
