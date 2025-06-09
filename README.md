@@ -1,5 +1,14 @@
 # Repository Configuration
 
+1. `npm i && npx prisma generate` in /root directory.
+2. Go to [Maestro Dashboard](https://dashboard.gomaestro.com) and create a free account and create a Preprod Cardano project.
+3. Go to [Vercel Dashboard](https://vercel.com/dashboard) and create a new project.
+4. In Vercel project storage create an integration with Neon postgres.
+5. Gather all environment variables and put in a .env file locally.
+6. `npm run dev` to run locally.
+7. Link the project with Vercel, and configure automatic deployments to 'main', push to GitHub.
+8. Add the remaining env vars to the Vercel deployment (likely database urls will already be inserted with the integration).
+
 ### values for .env file
 
 - DATABASE_URL="" (String to neon postgresql db)
