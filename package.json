@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write . && cd ./aiken-workspace && aiken fmt",
@@ -12,11 +12,13 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "aiken:build": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json",
-    "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose"
+    "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@lucid-evolution/lucid": "^0.4.28",
     "@prisma/client": "^6.9.0",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^6.9.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",

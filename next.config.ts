@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -9,6 +10,9 @@ const nextConfig: NextConfig = {
       topLevelAwait: true,
       layers: true,
     };
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
     // fix warnings for async functions in the browser (https://github.com/vercel/next.js/issues/64792)
     if (!isServer) {
       config.output.environment = {
