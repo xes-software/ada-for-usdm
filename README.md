@@ -5,9 +5,10 @@
 3. Go to [Vercel Dashboard](https://vercel.com/dashboard) and create a new project.
 4. In Vercel project storage create an integration with Neon postgres.
 5. Gather all environment variables and put in a .env file locally.
-6. `npm run dev` to run locally.
-7. Link the project with Vercel, and configure automatic deployments to 'main', push to GitHub.
-8. Add the remaining env vars to the Vercel deployment (likely database urls will already be inserted with the integration).
+6. Run `npx prisma db push` to push the schema to the remote database.
+7. `npm run dev` to run and test locally.
+8. Link the project with Vercel, and configure automatic deployments to 'main', push to GitHub.
+9. Add the remaining env vars to the Vercel deployment (database urls will already be inserted with the neon integration).
 
 ### values for .env file
 
