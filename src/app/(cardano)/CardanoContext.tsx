@@ -7,7 +7,6 @@ import {
   useState,
   useEffect,
 } from "react";
-import { toast } from "sonner";
 
 interface CardanoContextType {
   selectedWallet: string | null;

@@ -7,7 +7,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -19,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Main() {
   const { selectedWallet, lucidLibrary, setSelectedWallet, lovelace } =
@@ -143,18 +143,19 @@ export default function Main() {
                 <DialogHeader>
                   <DialogTitle>Select a Wallet</DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-2 gap-4 py-4">
+                <div className="grid grid-cols-2 gap-4 py-4 items-center">
                   {window.cardano &&
                     Object.keys(window.cardano).map((wallet) => (
                       <Button
                         key={wallet}
                         variant="outline"
-                        className="w-full h-full justify-start"
+                        className="h-full flex items-center justify-center"
                         onClick={() => connectWallet(wallet)}
                       >
-                        <img
+                        <Image
+                          width={125}
+                          height={125}
                           src={window.cardano[wallet].icon}
-                          className="w-full h-full"
                           alt={`${wallet} icon`}
                         />
                       </Button>
