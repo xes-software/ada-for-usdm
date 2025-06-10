@@ -85,6 +85,7 @@ export default function Main() {
             duration: 10000,
           });
         } catch (e) {
+          console.error(e);
           toast.error("Failed sign & submit the transaction.", {
             description: "Did you close out of the extension?",
             duration: 10000,
@@ -110,8 +111,8 @@ export default function Main() {
             This NFT is completely unique and cannot be minted again using the
             same policy ID. Each mint uses an unspent transaction output and
             validates that it is spent during the transaction. The blockchain
-            enforces a UTxO's uniqueness, giving our asset verifiable permanent
-            non-fungibility.
+            enforces a UTxO&apos;s uniqueness, giving our asset verifiable
+            permanent non-fungibility.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

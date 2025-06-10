@@ -1,6 +1,6 @@
 import { getServerLucidInstance } from "@/lib/lucid/server";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { fromText, type UTxO, Data } from "@lucid-evolution/lucid";
+import { fromText, Data } from "@lucid-evolution/lucid";
 import { getOneShotMintValidator } from "@/plutus";
 
 export type BuildTxRequest = {
