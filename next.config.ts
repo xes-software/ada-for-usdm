@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
 
+console.log("Logging the env vars:", JSON.stringify(process.env, null, 2));
+
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
