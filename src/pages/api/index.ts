@@ -2,6 +2,7 @@ import { getServerLucidInstance } from "@/lib/lucid/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { fromText, Data } from "@lucid-evolution/lucid";
 import { getOneShotMintValidator } from "@/plutus";
+import prisma from "@/lib/prisma";
 
 export type BuildTxRequest = {
   address: string;
@@ -46,6 +47,12 @@ export default async function handler(
   const response: BuildTxResponse = {
     txCbor: tx.toCBOR(),
   };
+
+  await prisma.transaction.create({
+    data: {
+      txHash: tx.toCBOR(),
+    },
+  });
 
   return res.status(200).json(response);
 }
