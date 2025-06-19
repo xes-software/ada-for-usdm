@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+validateEnv();
+
 const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: true,
@@ -24,3 +26,17 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+function validateEnv() {
+  const requiredEnvVars = [
+    "DATABASE_URL",
+    "MAESTRO_CARDANO_API_KEY",
+    "NEXT_PUBLIC_CARDANO_NETWORK",
+    "NODE_ENV",
+  ];
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      throw new Error(`Missing required environment variable: ${envVar}`);
+    }
+  }
+}
