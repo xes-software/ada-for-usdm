@@ -12,7 +12,8 @@
     "prisma:push": "prisma db push",
     "aiken:build": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json && format",
     "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose && format",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "git:archive": "git archive --format=zip --output=./web3-template.zip HEAD"
   },
   "dependencies": {
     "@lucid-evolution/lucid": "^0.4.28",
