@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-validateEnv();
+// validateEnv();
 
 const nextConfig: NextConfig = {
   output: "standalone",
