@@ -13,6 +13,7 @@
     "aiken:build": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json && format",
     "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose && format",
     "postinstall": "prisma generate",
+    "script:gen-wallet": "tsx ./scripts/gen-wallet.ts",
     "git:archive": "git archive --format=zip --output=./web3-template.zip HEAD"
   },
   "dependencies": {
@@ -47,6 +48,7 @@
     "prettier": "^3.5.3",
     "prisma": "^6.9.0",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
   }

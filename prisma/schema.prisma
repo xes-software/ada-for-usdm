@@ -8,11 +8,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Transaction {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  txHash    String   @unique @map("tx_hash")
+model Swap {
+  id           String   @id @default(uuid()) @map("id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  expiresAt    DateTime @map("expires_at")
+  inputAsset   Asset    @map("input_asset")
+  outputAsset  Asset    @map("output_asset")
+  inputAmount  BigInt   @map("input_amount")
+  outputAmount BigInt   @map("output_amount")
+  txHash       String?  @map("tx_hash")
 
-  @@index([txHash])
-  @@map("transactions")
+  @@index([txHash], type: Hash)
+  @@map("session")
+}
+
+model MerchantOutput {
+  txHash      String               @map("tx_hash")
+  outputIndex Int                  @map("output_index")
+  status      MerchantOutputStatus @map("status")
+
+  @@id([txHash, outputIndex])
+  @@index([status], type: Hash)
+  @@map("merchant_outputs")
+}
+
+model Order {
+  id String @id @default(uuid()) @map("id")
+}
+
+enum Asset {
+  LOVELACE
+  USDM
+}
+
+enum MerchantOutputStatus {
+  UNSPENT
+  SPENT
+  LOCKED
 }
