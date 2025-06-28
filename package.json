@@ -14,6 +14,7 @@
     "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose && format",
     "postinstall": "prisma generate",
     "script:gen-wallet": "tsx ./scripts/gen-wallet.ts",
+    "script:mint-fake-usdm": "tsx ./scripts/mint-fake-usdm.ts",
     "git:archive": "git archive --format=zip --output=./web3-template.zip HEAD"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -1,6 +1,5 @@
 import { getClientLucidInstance } from "@/lib/lucid/client";
 import { useCardanoContext } from "./CardanoContext";
-import { BuildTxRequest, BuildTxResponse } from "@/pages/api";
 import {
   Card,
   CardHeader,
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import Image from "next/image";
+import { ApiTxRequestBody } from "@/pages/api/tx";
 
 export default function Main() {
   const { selectedWallet, lucidLibrary, setSelectedWallet, lovelace } =
@@ -54,16 +54,13 @@ export default function Main() {
       const api = await window.cardano[selectedWallet].enable();
       lucid.selectWallet.fromAPI(api);
       const address = await lucid.wallet().address();
-      const utxos = await lucid.wallet().getUtxos();
-      const body: BuildTxRequest = {
+
+      const body: ApiTxRequestBody = {
         address,
-        utxo: {
-          outputIndex: utxos[0]!.outputIndex,
-          txHash: utxos[0]!.txHash,
-        },
+        usdmAmount: String(1_000_000_000n),
       };
 
-      const result = await fetch("/api", {
+      const result = await fetch("/api/tx", {
         body: JSON.stringify(body),
         method: "POST",
       });
