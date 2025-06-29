@@ -21,8 +21,13 @@ import Image from "next/image";
 import { ApiTxRequestBody, ApiTxResponseBody } from "@/pages/api/tx";
 
 export default function Main() {
-  const { selectedWallet, lucidLibrary, setSelectedWallet, lovelace } =
-    useCardanoContext();
+  const {
+    selectedWallet,
+    lucidLibrary,
+    setSelectedWallet,
+    lovelace,
+    apiQuote,
+  } = useCardanoContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
 
@@ -109,7 +114,7 @@ export default function Main() {
             same policy ID. Each mint uses an unspent transaction output and
             validates that it is spent during the transaction. The blockchain
             enforces a UTxO&apos;s uniqueness, giving our asset verifiable
-            permanent non-fungibility.
+            permanent non-fungibility. API QUOTE: ${JSON.stringify(apiQuote)}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

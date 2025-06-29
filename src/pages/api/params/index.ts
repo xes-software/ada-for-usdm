@@ -3,12 +3,11 @@ import { getCurrentPrice } from "@/lib/core";
 import { getServerMerchantWallet } from "@/lib/lucid/server";
 import { env } from "@/lib/env";
 import { fromText } from "@lucid-evolution/lucid";
+import { getBestAsk } from "@/lib/coinbase/best-bid-ask";
 
-export type ApiQuoteResponseBody = {
+export type ApiParamsResponseBody = {
   reserveUsdm: string;
-  lovelaceAsk: string;
-  setLovelaceFee: string;
-  exchangeLovelaceFee: string;
+  lovelaceUsdmBestAsk: string;
 };
 
 export default async function handler(
@@ -18,13 +17,8 @@ export default async function handler(
   if (req.method !== "GET") {
     return res.status(405).end();
   }
-  const { usdm_amount } = req.query;
-  if (!usdm_amount) {
-    return res.status(400).end();
-  }
-  const usdmAmount = Number(usdm_amount);
-  const { lovelaceAsk, setLovelaceFee, exchangeLovelaceFee } =
-    await getCurrentPrice(usdmAmount);
+
+  const ask = await getBestAsk();
 
   const wallet = getServerMerchantWallet();
   const utxos = await wallet.getUtxos();
@@ -35,11 +29,9 @@ export default async function handler(
     }
   });
 
-  const body = {
-    exchangeLovelaceFee: String(exchangeLovelaceFee),
-    lovelaceAsk: String(lovelaceAsk),
-    setLovelaceFee: String(setLovelaceFee),
+  const body: ApiParamsResponseBody = {
     reserveUsdm: String(balance),
+    lovelaceUsdmBestAsk: ask.price,
   };
 
   return res.status(200).json(body);

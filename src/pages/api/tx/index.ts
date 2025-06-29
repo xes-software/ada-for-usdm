@@ -11,10 +11,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export type ApiTxRequestBody = {
   address: string;
   usdmAmount: string;
+  cfTurnstileResponse: string;
 };
 
 export type ApiTxResponseBody = {
   txCbor: string;
+  expiry: number;
+  serverSignature: string;
+  lovelaceAsk: string;
+  exchangeLovelaceFee: string;
+  setLovelaceFee: string;
 };
 
 export default async function handler(
@@ -24,10 +30,30 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).end();
   }
-  const { address, usdmAmount } = JSON.parse(req.body) as ApiTxRequestBody;
+
+  const { address, usdmAmount, cfTurnstileResponse } = JSON.parse(
+    req.body,
+  ) as ApiTxRequestBody;
+
+  const verifyFormData = new FormData();
+  verifyFormData.append("secret", env.CLOUDFLARE_TURNSTILE_KEY);
+  verifyFormData.append("response", String(cfTurnstileResponse));
+
+  const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+  const result = await fetch(url, {
+    body: verifyFormData,
+    method: "POST",
+  });
+
+  const outcome = await result.json();
+  if (!outcome.success) {
+    return res.status(401);
+  }
+
   const lucid = await getServerLucidFromAddress(address);
   const currentPrice = await getCurrentPrice(Number(usdmAmount));
-  console.log("currentPrice", currentPrice);
+
   const total =
     currentPrice.lovelaceAsk +
     currentPrice.exchangeLovelaceFee +
@@ -66,28 +92,28 @@ export default async function handler(
     lovelace: total,
   };
 
-  console.log("merchantEndingAssets", merchantEndingAssets);
-  console.log("coinbase addressAssets", coinbaseAssets);
-
-  console.log("Logging total:", total);
-  console.log("Logging coinbase address:", env.COINBASE_CARDANO_ADDRESS);
-
+  const expiry = Date.now() + 1000 * 60 * 2; // 2 minutes
   const tx = await lucid
     .newTx()
     .collectFrom([...merchantUtxos])
     .pay.ToAddress(env.COINBASE_CARDANO_ADDRESS, coinbaseAssets)
     .pay.ToAddress(merchantAddress, merchantEndingAssets)
+    .validTo(expiry)
     .complete();
 
-  console.log(
-    tx.toTransaction().body().outputs().get(0).amount().coin().toString(),
+  const signature = await tx.partialSign.withPrivateKey(
+    env.MERCHANT_WALLET_KEY,
   );
-  console.log(tx.toTransaction().body().outputs().get(1));
-  console.log(tx.toTransaction().body().outputs().get(2));
 
   const body: ApiTxResponseBody = {
     txCbor: tx.toCBOR(),
+    expiry,
+    setLovelaceFee: String(currentPrice.setLovelaceFee),
+    lovelaceAsk: String(currentPrice.lovelaceAsk),
+    exchangeLovelaceFee: String(currentPrice.exchangeLovelaceFee),
+    serverSignature: signature,
   };
+  console.log(body);
 
   return res.status(200).json(body);
 }

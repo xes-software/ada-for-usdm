@@ -2,10 +2,19 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import { JetBrains_Mono } from "next/font/google";
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "xes.software LLC",
-  description: "Cardano/Bitcoin DeFi Template",
+  title: "ADA/USDM",
+  description: "Swap ADA for USDM with no slippage and low transaction fees",
+  icons: {
+    icon: [{ url: "/logo.svg", type: "image/svg_xml" }],
+  },
 };
 
 export default function RootLayout({
@@ -15,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
+      <body className={`${jetBrainsMono.className} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>

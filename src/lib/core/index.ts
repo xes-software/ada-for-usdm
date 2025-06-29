@@ -7,6 +7,6 @@ export async function getCurrentPrice(usdmAmount: number) {
   return {
     lovelaceAsk,
     setLovelaceFee: 2_000_000n,
-    exchangeLovelaceFee: (lovelaceAsk * 125n) / 10_000n,
+    exchangeLovelaceFee: (lovelaceAsk * 71n) / 10_000n,
   };
 }

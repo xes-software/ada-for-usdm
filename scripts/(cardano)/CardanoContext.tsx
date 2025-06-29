@@ -1,5 +1,6 @@
 "use client";
 import { getClientLucidInstance } from "@/lib/lucid/client";
+import { ApiQuoteResponseBody } from "@/pages/api/quote";
 import {
   createContext,
   useContext,
@@ -11,9 +12,11 @@ import {
 interface CardanoContextType {
   selectedWallet: string | null;
   setSelectedWallet: (wallet: string | null) => void;
+  getUsdmQuote: (usdm_amount: string) => Promise<void>;
   isCardanoContextLoading: boolean;
   lovelace: bigint;
   lucidLibrary: typeof import("@lucid-evolution/lucid") | null;
+  apiQuote: ApiQuoteResponseBody | null;
 }
 
 const CardanoContext = createContext<CardanoContextType | undefined>(undefined);
@@ -27,10 +30,20 @@ export function CardanoProvider({ children }: { children: ReactNode }) {
   const [lucidLibrary, setLucidLibrary] = useState<
     typeof import("@lucid-evolution/lucid") | null
   >(null);
+  const [apiQuote, setApiQuote] = useState<ApiQuoteResponseBody | null>(null);
+
+  async function getUsdmQuote(usdm_amount: string) {
+    const searchParams = new URLSearchParams({ usdm_amount });
+    const response = await fetch("/api/quote?" + searchParams.toString());
+    setApiQuote(await response.json());
+  }
 
   useEffect(() => {
     async function loadCardanoContext() {
-      const l = await import("@lucid-evolution/lucid");
+      const [l] = await Promise.all([
+        import("@lucid-evolution/lucid"),
+        getUsdmQuote("100000000"),
+      ]);
       setLucidLibrary(l);
       const selectedWallet = localStorage.getItem("selectedWallet");
       if (selectedWallet) {
@@ -80,6 +93,8 @@ export function CardanoProvider({ children }: { children: ReactNode }) {
         setSelectedWallet,
         lovelace,
         lucidLibrary,
+        getUsdmQuote,
+        apiQuote,
       }}
     >
       {children}
