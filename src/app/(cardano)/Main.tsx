@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import Image from "next/image";
-import { ApiTxRequestBody } from "@/pages/api/tx";
+import { ApiTxRequestBody, ApiTxResponseBody } from "@/pages/api/tx";
 
 export default function Main() {
   const { selectedWallet, lucidLibrary, setSelectedWallet, lovelace } =
@@ -57,7 +57,7 @@ export default function Main() {
 
       const body: ApiTxRequestBody = {
         address,
-        usdmAmount: String(1_000_000_000n),
+        usdmAmount: String(500_000_000n),
       };
 
       const result = await fetch("/api/tx", {
@@ -66,7 +66,7 @@ export default function Main() {
       });
 
       if (result.ok) {
-        const { txCbor } = (await result.json()) as BuildTxResponse;
+        const { txCbor } = (await result.json()) as ApiTxResponseBody;
 
         try {
           const tx = await lucid.fromTx(txCbor).sign.withWallet().complete();

@@ -3,10 +3,10 @@ import { getBestAsk } from "@/lib/coinbase/best-bid-ask";
 export async function getCurrentPrice(usdmAmount: number) {
   const ask = await getBestAsk();
   const price = Number(ask.price) - 0.0027;
-  const adaAsk = usdmAmount / price;
+  const lovelaceAsk = BigInt(Math.trunc(usdmAmount / price));
   return {
-    adaAsk,
-    setAdaFee: 2,
-    exchangeAdaFee: adaAsk * 0.0125,
+    lovelaceAsk,
+    setLovelaceFee: 2_000_000n,
+    exchangeLovelaceFee: (lovelaceAsk * 125n) / 10_000n,
   };
 }
