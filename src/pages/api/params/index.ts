@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getCurrentPrice } from "@/lib/core";
 import { getServerMerchantWallet } from "@/lib/lucid/server";
 import { env } from "@/lib/env";
 import { fromText } from "@lucid-evolution/lucid";

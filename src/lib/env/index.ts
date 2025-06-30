@@ -1,7 +1,7 @@
 import { MaestroSupportedNetworks } from "@lucid-evolution/lucid";
 
 export const env = {
-  MERCHANT_WALLET_KEY: process.env.MERCHANT_WALLET_KEY!,
+  MERCHANT_WALLET_SEED_PHRASE: process.env.MERCHANT_WALLET_SEED_PHRASE!,
   COINBASE_API_PRIVATE_KEY: process.env.COINBASE_API_PRIVATE_KEY!,
   COINBASE_API_KEY_NAME: process.env.COINBASE_API_KEY_NAME!,
   MAESTRO_CARDANO_API_KEY: process.env.MAESTRO_CARDANO_API_KEY!,

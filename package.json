@@ -1,5 +1,5 @@
 {
-  "name": "@xes.software/web3-template",
+  "name": "@xes.software/swap",
   "version": "1.3.0",
   "private": true,
   "scripts": {
@@ -10,8 +10,6 @@
     "format": "prettier --write . && cd ./aiken-workspace && aiken fmt",
     "format:check": "prettier --check .",
     "prisma:push": "prisma db push",
-    "aiken:build": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json && format",
-    "aiken:build-traces": "cd ./aiken-workspace && aiken build -o ../src/plutus/validators.json -t verbose && format",
     "postinstall": "prisma generate",
     "script:gen-wallet": "tsx ./scripts/gen-wallet.ts",
     "script:mint-fake-usdm": "tsx ./scripts/mint-fake-usdm.ts",

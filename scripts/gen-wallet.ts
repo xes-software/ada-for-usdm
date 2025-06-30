@@ -1,3 +1,12 @@
-import { generatePrivateKey } from "@lucid-evolution/lucid";
+import {
+  generateSeedPhrase,
+  Emulator,
+  makeWalletFromSeed,
+} from "@lucid-evolution/lucid";
 
-console.log(generatePrivateKey());
+const seed = generateSeedPhrase();
+const wallet = makeWalletFromSeed(new Emulator([]), "Preprod", seed);
+wallet.address().then((address) => {
+  console.log(seed);
+  console.log(address);
+});

@@ -8,6 +8,7 @@ import {
   mintingPolicyToId,
   unixTimeToSlot,
   fromText,
+  makeWalletFromSeed,
 } from "@lucid-evolution/lucid";
 import { loadEnv } from "./utils";
 loadEnv();
@@ -18,17 +19,17 @@ const maestro = new Maestro({
 });
 
 async function main() {
-  const wallet = makeWalletFromPrivateKey(
+  const wallet = makeWalletFromSeed(
     maestro,
     "Preprod",
-    process.env.MERCHANT_WALLET_KEY!,
+    process.env.MERCHANT_WALLET_SEED_PHRASE!,
   );
 
   const address = await wallet.address();
   const details = getAddressDetails(address);
   const lucid = await Lucid(maestro, "Preprod");
 
-  lucid.selectWallet.fromPrivateKey(process.env.MERCHANT_WALLET_KEY!);
+  lucid.selectWallet.fromSeed(process.env.MERCHANT_WALLET_SEED_PHRASE!);
 
   const native: Native = {
     type: "all",

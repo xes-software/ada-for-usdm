@@ -1,10 +1,4 @@
-import {
-  Lucid,
-  Maestro,
-  MaestroSupportedNetworks,
-  makeWalletFromAddress,
-  makeWalletFromPrivateKey,
-} from "@lucid-evolution/lucid";
+import { Lucid, Maestro, makeWalletFromSeed } from "@lucid-evolution/lucid";
 import { env } from "@/lib/env";
 
 const maestro = new Maestro({
@@ -24,9 +18,9 @@ export async function getServerLucidFromAddress(address: string) {
 }
 
 export function getServerMerchantWallet() {
-  return makeWalletFromPrivateKey(
+  return makeWalletFromSeed(
     maestro,
     env.CARDANO_NETWORK,
-    env.MERCHANT_WALLET_KEY,
+    env.MERCHANT_WALLET_SEED_PHRASE,
   );
 }

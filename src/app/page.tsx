@@ -16,11 +16,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { ApiParamsResponseBody } from "@/pages/api/params";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiTxRequestBody, ApiTxResponseBody } from "@/pages/api/tx";
-import { Cardano, WalletApi } from "@lucid-evolution/lucid";
+import { Cardano } from "@lucid-evolution/lucid";
 import { toast } from "sonner";
 import {
   Dialog,
-  DialogTrigger,
   DialogClose,
   DialogContent,
   DialogHeader,
@@ -34,7 +33,6 @@ import { formatBigIntString, toBigIntFixed6 } from "@/lib/utils";
 
 const CLOUDFLARE_TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!;
-console.log(CLOUDFLARE_TURNSTILE_SITE_KEY);
 
 export default function Page() {
   const [params, setParams] = useState<ApiParamsResponseBody | null>(null);
@@ -114,27 +112,32 @@ export default function Page() {
   };
 
   async function signTransaction() {
-    const api = await cardano![wallet!].enable();
-    const lucid = await getClientLucidInstance(lib!);
-    lucid.selectWallet.fromAPI(api);
+    try {
+      const api = await cardano![wallet!].enable();
+      const lucid = await getClientLucidInstance(lib!);
+      lucid.selectWallet.fromAPI(api);
 
-    const walletSig = await lucid
-      .fromTx(responseBody!.txCbor)
-      .partialSign.withWallet();
+      const walletSig = await lucid
+        .fromTx(responseBody!.txCbor)
+        .partialSign.withWallet();
 
-    const completedTx = await lucid
-      .fromTx(responseBody!.txCbor)
-      .assemble([walletSig, responseBody!.serverSignature])
-      .complete();
-    const txHash = await completedTx.submit();
-    toast.message("Success Transaction!", {
-      description: txHash,
-      action: (
-        <Button onClick={() => navigator.clipboard.writeText(txHash)}>
-          Copy
-        </Button>
-      ),
-    });
+      const completedTx = await lucid
+        .fromTx(responseBody!.txCbor)
+        .assemble([walletSig, responseBody!.serverSignature])
+        .complete();
+      const txHash = await completedTx.submit();
+      setDialogOpen(false);
+      toast.message("Success Transaction!", {
+        description: txHash,
+        action: (
+          <Button onClick={() => navigator.clipboard.writeText(txHash)}>
+            Copy
+          </Button>
+        ),
+      });
+    } catch (e) {
+      toast.error("Error signing transaction! Please try again.");
+    }
   }
 
   async function selectWallet(name: string) {
@@ -310,7 +313,12 @@ export default function Page() {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent
+          showCloseButton={false}
+          onInteractOutside={(event) => {
+            event.preventDefault();
+          }}
+        >
           <DialogHeader>
             <DialogTitle>Complete Transaction</DialogTitle>
             <DialogDescription>
@@ -347,9 +355,9 @@ export default function Page() {
             </div>
           )}
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <Button variant="outline" onClick={() => location.reload()}>
+              Cancel
+            </Button>
             <Button type="submit" onClick={() => signTransaction()}>
               Sign Transaction
             </Button>

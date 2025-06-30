@@ -1,11 +1,10 @@
 import { getCurrentPrice } from "@/lib/core";
 import { env } from "@/lib/env";
 import {
-  getServerLucidInstance,
   getServerLucidFromAddress,
   getServerMerchantWallet,
 } from "@/lib/lucid/server";
-import { Assets, fromText } from "@lucid-evolution/lucid";
+import { Assets, fromText, walletFromSeed } from "@lucid-evolution/lucid";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiTxRequestBody = {
@@ -101,9 +100,8 @@ export default async function handler(
     .validTo(expiry)
     .complete();
 
-  const signature = await tx.partialSign.withPrivateKey(
-    env.MERCHANT_WALLET_KEY,
-  );
+  const privateKey = walletFromSeed(env.MERCHANT_WALLET_SEED_PHRASE).paymentKey;
+  const signature = await tx.partialSign.withPrivateKey(privateKey);
 
   const body: ApiTxResponseBody = {
     txCbor: tx.toCBOR(),
