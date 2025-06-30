@@ -20,7 +20,6 @@ import { Cardano } from "@lucid-evolution/lucid";
 import { toast } from "sonner";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -69,7 +68,7 @@ export default function Page() {
   }, []);
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault(); // Prevents the default browser form submission
+    event.preventDefault();
     setExchangeLoading(true);
 
     try {
@@ -136,6 +135,7 @@ export default function Page() {
         ),
       });
     } catch (e) {
+      console.error(e);
       toast.error("Error signing transaction! Please try again.");
     }
   }
@@ -169,6 +169,7 @@ export default function Page() {
       setWallet(name);
       setAddress(address);
     } catch (e) {
+      console.error(e);
       toast.error("Unable to connect wallet, please try again!");
     }
   }

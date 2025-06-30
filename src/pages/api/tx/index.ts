@@ -75,7 +75,7 @@ export default async function handler(
     }
   }
 
-  let merchantEndingAssets: Assets = {};
+  const merchantEndingAssets: Assets = {};
   for (const utxo of merchantUtxos) {
     for (const [key, value] of Object.entries(utxo.assets)) {
       if (merchantEndingAssets[key]) {

@@ -7,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatBigIntString(bigInt: string, decimalPlaces: number) {
   const padded = bigInt.padStart(decimalPlaces + 1, "0");
-  let integerPart = padded.slice(0, -decimalPlaces);
-  let fractionalPart = padded.slice(-decimalPlaces);
+  const integerPart = padded.slice(0, -decimalPlaces);
+  const fractionalPart = padded.slice(-decimalPlaces);
   return `${integerPart}.${fractionalPart}`;
 }
 

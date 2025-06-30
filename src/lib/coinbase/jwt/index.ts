@@ -27,6 +27,7 @@ export function getCoinbaseApiJwt(
         kid: key_name,
         nonce: crypto.randomBytes(16).toString("hex"),
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   );
 

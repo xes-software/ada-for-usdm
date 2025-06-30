@@ -1,5 +1,4 @@
 import { getBestAsk } from "@/lib/coinbase/best-bid-ask";
-import { formatBigIntString } from "../utils";
 
 export async function getCurrentPrice(usdmAmount: bigint) {
   const ask = await getBestAsk();
