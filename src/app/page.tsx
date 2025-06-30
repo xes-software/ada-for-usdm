@@ -47,6 +47,7 @@ export default function Page() {
   const [responseBody, setResponseBody] = useState<ApiTxResponseBody | null>(
     null,
   );
+  const [turnstileComplete, setTurnstileComplete] = useState(false);
 
   useEffect(() => {
     fetch("/api/params").then((res) => {
@@ -65,6 +66,11 @@ export default function Page() {
           "Failed to load Cardano library, the page will not work as expected!",
         ),
       );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).javascriptCallback = function () {
+      setTurnstileComplete(true);
+    };
   }, []);
 
   const handleSubmit = async (event: FormEvent) => {
@@ -292,7 +298,8 @@ export default function Page() {
                   disabled={
                     wallet === null ||
                     address === null ||
-                    exchangeLoading === true
+                    exchangeLoading === true ||
+                    turnstileComplete === false
                   }
                 >
                   {exchangeLoading === true ? (
