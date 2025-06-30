@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState, useActionState } from "react";
 import { ApiParamsResponseBody } from "@/pages/api/params";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiTxRequestBody, ApiTxResponseBody } from "@/pages/api/tx";
@@ -23,12 +23,15 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
   DialogFooter,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { getClientLucidInstance } from "@/lib/lucid/client";
-import { DollarSign } from "lucide-react";
+import { DollarSign, MailOpen } from "lucide-react";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { formatBigIntString, toBigIntFixed6 } from "@/lib/utils";
+import { EmailFormState, emailSubscribe } from "./actions";
 
 const CLOUDFLARE_TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!;
@@ -48,6 +51,21 @@ export default function Page() {
     null,
   );
   const [turnstileComplete, setTurnstileComplete] = useState(false);
+  const initialState: EmailFormState = {
+    success: false,
+    error: false,
+    message: "",
+  };
+  const [state, formAction, isPending] = useActionState<
+    EmailFormState,
+    FormData
+  >(emailSubscribe, initialState);
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(state.message);
+    }
+  }, [state]);
 
   useEffect(() => {
     fetch("/api/params").then((res) => {
@@ -216,6 +234,64 @@ export default function Page() {
             Advanced Trading ADA/USDC pair (1.20% Taker). Also consider, this
             pair has ZERO slippage, which greatly increases the value of
             exchange.
+            <br /> <br />
+            By design, this exchange has limited USDM available, but it is
+            regularly restocked.
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  type="button"
+                  className="w-full mt-2 px-24"
+                  variant="outline"
+                >
+                  <MailOpen className="size-4" />
+                  <span>Apply for Restock Notification</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <form action={formAction} className="space-y-2 space-x-2">
+                  <DialogHeader>
+                    <DialogTitle>Apply for Notification</DialogTitle>
+                    <DialogDescription>
+                      We will notify you when we add USDM liquidity.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4">
+                    <div className="grid gap-3">
+                      <Input
+                        id="accept-e"
+                        name="accept-e"
+                        placeholder="leif@xes.software"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        inputMode="none"
+                        aria-autocomplete="none"
+                        disabled={isPending}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button variant="outline">Cancel</Button>
+                    </DialogClose>
+                    <Button type="submit" disabled={isPending === true}>
+                      {isPending === true ? (
+                        <>
+                          <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          <span>Submitting...</span>
+                        </>
+                      ) : (
+                        <>
+                          <MailOpen className="size-4" />
+                          <span>Subscribe</span>
+                        </>
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </CardDescription>
 
           <CardDescription className="w-full md:w-1/2">

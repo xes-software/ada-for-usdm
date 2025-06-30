@@ -10,6 +10,8 @@ export const env = {
   USDM_POLICY_ID: process.env.USDM_POLICY_ID!,
   USDM_ASSET_NAME: process.env.USDM_ASSET_NAME!,
   CLOUDFLARE_TURNSTILE_KEY: process.env.CLOUDFLARE_TURNSTILE_KEY!,
+  RESEND_API_KEY: process.env.RESEND_API_KEY!,
+  RESEND_GENERAL_AUDIENCE_ID: process.env.RESEND_GENERAL_AUDIENCE_ID!,
 };
 
 export function buildValidateEnv() {

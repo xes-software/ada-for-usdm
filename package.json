@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@lucid-evolution/lucid": "^0.4.28",
+    "resend": "^4.5.2",
     "@prisma/client": "^6.9.0",
     "@prisma/extension-accelerate": "^2.0.1",
     "@prisma/nextjs-monorepo-workaround-plugin": "^6.9.0",
