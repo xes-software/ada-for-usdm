@@ -24,9 +24,11 @@ export default async function handler(
 
   console.log("Logging utxos:", utxos);
   let balance: bigint = 0n;
+  const unit = env.USDM_POLICY_ID + fromText("(333) USDM");
+  console.log("Logging Unit:", unit);
   utxos.forEach((utxo) => {
-    if (utxo.assets[env.USDM_POLICY_ID + fromText("(333) USDM")]) {
-      balance += utxo.assets[env.USDM_POLICY_ID + fromText("(333) USDM")];
+    if (utxo.assets[unit]) {
+      balance += utxo.assets[unit];
     }
   });
 
