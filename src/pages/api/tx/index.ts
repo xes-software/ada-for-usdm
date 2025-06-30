@@ -48,11 +48,11 @@ export default async function handler(
 
   const outcome = await result.json();
   if (!outcome.success) {
-    return res.status(401);
+    return res.status(401).end();
   }
 
   const lucid = await getServerLucidFromAddress(address);
-  const currentPrice = await getCurrentPrice(Number(usdmAmount));
+  const currentPrice = await getCurrentPrice(BigInt(usdmAmount));
 
   const total =
     currentPrice.lovelaceAsk +

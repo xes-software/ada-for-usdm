@@ -30,13 +30,7 @@ import {
 import { getClientLucidInstance } from "@/lib/lucid/client";
 import { DollarSign } from "lucide-react";
 import { DialogDescription } from "@radix-ui/react-dialog";
-
-function formatBigIntString(bigInt: string, decimalPlaces: number) {
-  const padded = bigInt.padStart(decimalPlaces + 1, "0");
-  let integerPart = padded.slice(0, -decimalPlaces);
-  let fractionalPart = padded.slice(-decimalPlaces);
-  return `${integerPart}.${fractionalPart}`;
-}
+import { formatBigIntString, toBigIntFixed6 } from "@/lib/utils";
 
 const CLOUDFLARE_TURNSTILE_SITE_KEY =
   process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!;
@@ -89,7 +83,7 @@ export default function Page() {
         .toString();
 
       const body: ApiTxRequestBody = {
-        usdmAmount,
+        usdmAmount: toBigIntFixed6(usdmAmount),
         cfTurnstileResponse,
         address: address!,
       };
@@ -118,6 +112,30 @@ export default function Page() {
 
     // Perform actions with the form data, e.g., send to an API
   };
+
+  async function signTransaction() {
+    const api = await cardano![wallet!].enable();
+    const lucid = await getClientLucidInstance(lib!);
+    lucid.selectWallet.fromAPI(api);
+
+    const walletSig = await lucid
+      .fromTx(responseBody!.txCbor)
+      .partialSign.withWallet();
+
+    const completedTx = await lucid
+      .fromTx(responseBody!.txCbor)
+      .assemble([walletSig, responseBody!.serverSignature])
+      .complete();
+    const txHash = await completedTx.submit();
+    toast.message("Success Transaction!", {
+      description: txHash,
+      action: (
+        <Button onClick={() => navigator.clipboard.writeText(txHash)}>
+          Copy
+        </Button>
+      ),
+    });
+  }
 
   async function selectWallet(name: string) {
     try {
@@ -300,17 +318,41 @@ export default function Page() {
             </DialogDescription>
           </DialogHeader>
 
-          <div>Spot Price: {responseBody?.lovelaceAsk} ADA</div>
-          <div>
-            Exchange Fee (0.71%): {responseBody?.exchangeLovelaceFee} ADA
-          </div>
-          <div>Protocol Fee: {responseBody?.setLovelaceFee} ADA</div>
-          <div>Total ADA: {responseBody?.exchangeLovelaceFee} ADA</div>
+          {responseBody && (
+            <div>
+              <div>
+                Spot Price: {formatBigIntString(responseBody.lovelaceAsk, 6)}{" "}
+                ADA
+              </div>
+              <div>
+                Exchange Fee (0.71%):{" "}
+                {formatBigIntString(responseBody.exchangeLovelaceFee, 6)} ADA
+              </div>
+              <div>
+                Protocol Fee:{" "}
+                {formatBigIntString(responseBody.setLovelaceFee, 6)} ADA
+              </div>
+              <div>
+                Total ADA:{" "}
+                {formatBigIntString(
+                  String(
+                    BigInt(responseBody.exchangeLovelaceFee) +
+                      BigInt(responseBody.lovelaceAsk) +
+                      BigInt(responseBody.setLovelaceFee),
+                  ),
+                  6,
+                )}{" "}
+                ADA
+              </div>
+            </div>
+          )}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Sign Transaction</Button>
+            <Button type="submit" onClick={() => signTransaction()}>
+              Sign Transaction
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
