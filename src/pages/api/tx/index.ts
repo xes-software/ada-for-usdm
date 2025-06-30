@@ -4,7 +4,7 @@ import {
   getServerLucidFromAddress,
   getServerMerchantWallet,
 } from "@/lib/lucid/server";
-import { Assets, fromText, walletFromSeed } from "@lucid-evolution/lucid";
+import { Assets, walletFromSeed } from "@lucid-evolution/lucid";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type ApiTxRequestBody = {
@@ -63,7 +63,7 @@ export default async function handler(
 
   const totalMerchantUtxos = await merchantWallet.getUtxos();
   const merchantUtxos = [];
-  const unit = env.USDM_POLICY_ID + fromText("(333) USDM");
+  const unit = env.USDM_POLICY_ID + env.USDM_ASSET_NAME;
   console.log("Logging Unit:", unit);
   let usdmTotal = 0n;
   for (const utxo of totalMerchantUtxos) {

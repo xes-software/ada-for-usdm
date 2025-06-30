@@ -8,6 +8,7 @@ export const env = {
   CARDANO_NETWORK: process.env.CARDANO_NETWORK! as MaestroSupportedNetworks,
   COINBASE_CARDANO_ADDRESS: process.env.COINBASE_CARDANO_ADDRESS!,
   USDM_POLICY_ID: process.env.USDM_POLICY_ID!,
+  USDM_ASSET_NAME: process.env.USDM_ASSET_NAME!,
   CLOUDFLARE_TURNSTILE_KEY: process.env.CLOUDFLARE_TURNSTILE_KEY!,
 };
 

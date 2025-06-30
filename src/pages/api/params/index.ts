@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerMerchantWallet } from "@/lib/lucid/server";
 import { env } from "@/lib/env";
-import { fromText } from "@lucid-evolution/lucid";
 import { getBestAsk } from "@/lib/coinbase/best-bid-ask";
 
 export type ApiParamsResponseBody = {
@@ -24,7 +23,7 @@ export default async function handler(
 
   console.log("Logging utxos:", utxos);
   let balance: bigint = 0n;
-  const unit = env.USDM_POLICY_ID + fromText("(333) USDM");
+  const unit = env.USDM_POLICY_ID + env.USDM_ASSET_NAME;
   console.log("Logging Unit:", unit);
   utxos.forEach((utxo) => {
     if (utxo.assets[unit]) {

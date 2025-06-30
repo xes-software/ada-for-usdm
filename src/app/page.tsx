@@ -287,9 +287,7 @@ export default function Page() {
                         />
                       </Button>
                     ))}
-                  {cardano && Object.keys(cardano).length === 0 && (
-                    <div>No detected Cardano Wallets</div>
-                  )}
+                  {!cardano && <div>No detected Cardano Wallets</div>}
                 </div>
 
                 <Button

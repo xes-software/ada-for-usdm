@@ -47,7 +47,7 @@ async function main() {
 
   const script = scriptFromNative(native);
   const policyId = mintingPolicyToId(script);
-  const unit = policyId + fromText("(333) USDM");
+  const unit = policyId + process.env.USDM_ASSET_NAME;
   const tx = await lucid
     .newTx()
     .mintAssets({ [unit]: 100_000_000_000n })
