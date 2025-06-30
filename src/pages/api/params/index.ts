@@ -21,6 +21,8 @@ export default async function handler(
 
   const wallet = getServerMerchantWallet();
   const utxos = await wallet.getUtxos();
+
+  console.log("Logging utxos:", utxos);
   let balance: bigint = 0n;
   utxos.forEach((utxo) => {
     if (utxo.assets[env.USDM_POLICY_ID + fromText("USDM")]) {
