@@ -63,7 +63,7 @@ export default async function handler(
 
   const totalMerchantUtxos = await merchantWallet.getUtxos();
   const merchantUtxos = [];
-  const unit = env.USDM_POLICY_ID + fromText("USDM");
+  const unit = env.USDM_POLICY_ID + fromText("(333) USDM");
   let usdmTotal = 0n;
   for (const utxo of totalMerchantUtxos) {
     if (utxo.assets[unit]) {
